@@ -1,0 +1,354 @@
+/* ============================================================
+   FLAPPY CAT - Stylesheet
+   Desain UI modern, bersih, dengan palet warna orisinal
+   ============================================================ */
+
+:root {
+  --color-bg-dark: #1a1a2e;
+  --color-accent: #ff9f43;      /* oranye - warna utama kucing */
+  --color-yellow: #ffd93d;      /* kuning - warna judul FLAPPY CAT */
+  --color-accent-2: #6ee7f5;    /* biru langit */
+  --color-white: #ffffff;
+  --color-text-dim: #c9c9e0;
+  --color-danger: #ff5e5e;
+  --radius: 18px;
+  --shadow-btn: 0 6px 0 rgba(0,0,0,0.25);
+}
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  touch-action: manipulation;
+}
+
+/* Wadah game menjaga rasio potret 9:16, dipusatkan di layar apa pun */
+#game-container {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  max-width: calc(100vh * 0.5625);
+  max-height: 100vh;
+  margin: 0 auto;
+  overflow: hidden;
+  background: #4ec3e0;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+canvas#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  touch-action: none;
+}
+
+/* ================= Layar Overlay Umum ================= */
+.overlay-screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  background: linear-gradient(180deg, rgba(20,20,40,0.55), rgba(10,10,25,0.75));
+  backdrop-filter: blur(2px);
+  text-align: center;
+  z-index: 10;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Menu utama dibuat lebih transparan dari layar overlay lainnya,
+   supaya langit & awan pixel di canvas belakang tetap terlihat jelas */
+#menu-screen {
+  background: linear-gradient(180deg, rgba(20,20,40,0.18), rgba(10,10,25,0.4));
+  backdrop-filter: none;
+}
+
+/* Kucing melayang di menu utama, gaya pixel art (tidak blur saat di-scale) */
+.floating-cat {
+  width: 42vw;
+  max-width: 170px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  filter: drop-shadow(0 10px 12px rgba(0,0,0,0.35));
+  animation: floatCat 3.2s ease-in-out infinite;
+  margin-bottom: -6px;
+}
+@keyframes floatCat {
+  0%, 100% { transform: translateY(0px) rotate(-4deg); }
+  50% { transform: translateY(-18px) rotate(4deg); }
+}
+
+/* ================= Judul & Menu ================= */
+.title-wrap { margin-bottom: 6px; }
+
+.game-title {
+  font-size: 2.6rem;
+  font-weight: 900;
+  color: var(--color-yellow);
+  margin: 0;
+  letter-spacing: 1px;
+  text-shadow: 0 4px 0 rgba(0,0,0,0.35), 0 0 20px rgba(255,217,61,0.6);
+}
+.game-title span {
+  color: var(--color-yellow);
+}
+
+.subtitle {
+  color: var(--color-text-dim);
+  margin: 6px 0 0;
+  font-size: 0.95rem;
+}
+
+.menu-highscore {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius);
+  padding: 10px 26px;
+}
+.menu-highscore .label {
+  font-size: 0.7rem;
+  letter-spacing: 2px;
+  color: var(--color-text-dim);
+}
+.menu-highscore #menu-highscore-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--color-white);
+}
+
+.menu-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 100%;
+  max-width: 260px;
+}
+
+.hint-text {
+  color: var(--color-text-dim);
+  font-size: 0.85rem;
+  margin-top: 4px;
+}
+
+/* ================= Tombol ================= */
+.btn {
+  border: none;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: transform 0.08s ease, box-shadow 0.08s ease;
+}
+.btn:active {
+  transform: translateY(4px);
+  box-shadow: 0 2px 0 rgba(0,0,0,0.25);
+}
+
+.btn-primary {
+  background: var(--color-accent);
+  color: #2b1200;
+  box-shadow: var(--shadow-btn), 0 0 0 3px rgba(255,159,67,0.25);
+}
+
+.btn-secondary {
+  background: rgba(255,255,255,0.15);
+  color: var(--color-white);
+  border: 2px solid rgba(255,255,255,0.3);
+  box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+}
+
+.btn-mini {
+  background: var(--color-danger);
+  color: var(--color-white);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 0 rgba(0,0,0,0.25);
+}
+
+/* ================= HUD saat bermain ================= */
+#hud {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 18px 16px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+#score-display {
+  flex: 1;
+  text-align: center;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--color-white);
+  text-shadow: 0 3px 0 rgba(0,0,0,0.35);
+  margin-left: 40px;
+}
+
+.icon-btn {
+  pointer-events: all;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0,0,0,0.35);
+  color: var(--color-white);
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ================= Settings ================= */
+.screen-title {
+  color: var(--color-white);
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: 0 0 10px;
+  letter-spacing: 1px;
+}
+
+.setting-row {
+  width: 100%;
+  max-width: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--color-white);
+  font-size: 0.95rem;
+  background: rgba(255,255,255,0.08);
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.setting-row input[type="range"] {
+  width: 110px;
+  accent-color: var(--color-accent);
+}
+
+/* Toggle switch sederhana */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 46px;
+  height: 26px;
+}
+.switch input { display: none; }
+.slider-toggle {
+  position: absolute;
+  cursor: pointer;
+  inset: 0;
+  background: rgba(255,255,255,0.25);
+  border-radius: 20px;
+  transition: 0.2s;
+}
+.slider-toggle::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.switch input:checked + .slider-toggle {
+  background: var(--color-accent);
+}
+.switch input:checked + .slider-toggle::before {
+  transform: translateX(20px);
+}
+
+/* ================= Ready screen ================= */
+#ready-screen {
+  background: transparent;
+  backdrop-filter: none;
+  pointer-events: none;
+  justify-content: flex-start;
+  padding-top: 38%;
+}
+.ready-text {
+  color: var(--color-white);
+  font-size: 1.2rem;
+  font-weight: 700;
+  background: rgba(0,0,0,0.3);
+  padding: 10px 18px;
+  border-radius: 14px;
+  animation: pulse 1.4s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.05); }
+}
+
+/* ================= Game Over ================= */
+.go-title {
+  color: var(--color-danger);
+  font-size: 2rem;
+  text-shadow: 0 3px 0 rgba(0,0,0,0.4);
+}
+
+.score-board {
+  background: rgba(255,255,255,0.1);
+  border: 2px solid rgba(255,255,255,0.2);
+  border-radius: var(--radius);
+  padding: 16px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 220px;
+}
+
+.score-row {
+  display: flex;
+  justify-content: space-between;
+  color: var(--color-white);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+.score-row .label {
+  color: var(--color-text-dim);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+}
+
+#new-record-badge {
+  margin-top: 4px;
+  color: var(--color-accent);
+  font-weight: 800;
+  font-size: 0.9rem;
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+/* Layar kecil landscape fallback: tetap dipusatkan berkat max-width di container */

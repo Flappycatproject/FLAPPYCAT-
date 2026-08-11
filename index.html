@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+<meta name="theme-color" content="#1a1a2e" />
+<title>FLAPPY CAT</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Wadah utama game, menjaga rasio potret di semua ukuran layar -->
+  <div id="game-container">
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- ================= MAIN MENU ================= -->
+    <div id="menu-screen" class="overlay-screen">
+      <img id="menu-cat" class="floating-cat" src="assets/cat.png" alt="Kucing terbang">
+
+      <div class="title-wrap">
+        <h1 class="game-title">FLAPPY <span>CAT</span></h1>
+        <p class="subtitle">Terbang setinggi mungkin!</p>
+      </div>
+
+      <div class="menu-highscore">
+        <span class="label">HIGH SCORE</span>
+        <span id="menu-highscore-value">0</span>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="btn-play" class="btn btn-primary">▶ PLAY</button>
+        <button id="btn-settings" class="btn btn-secondary">⚙ SETTINGS</button>
+      </div>
+
+      <p class="hint-text">Ketuk layar untuk terbang ke atas</p>
+    </div>
+
+    <!-- ================= SETTINGS ================= -->
+    <div id="settings-screen" class="overlay-screen hidden">
+      <h2 class="screen-title">SETTINGS</h2>
+
+      <div class="setting-row">
+        <span>Musik Latar</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-music" checked>
+          <span class="slider-toggle"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span>Efek Suara</span>
+        <label class="switch">
+          <input type="checkbox" id="toggle-sfx" checked>
+          <span class="slider-toggle"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <span>Volume</span>
+        <input type="range" id="volume-slider" min="0" max="100" value="60">
+      </div>
+
+      <div class="setting-row">
+        <span>Reset High Score</span>
+        <button id="btn-reset-score" class="btn btn-mini">RESET</button>
+      </div>
+
+      <button id="btn-settings-back" class="btn btn-primary">KEMBALI</button>
+    </div>
+
+    <!-- ================= HUD (saat bermain) ================= -->
+    <div id="hud" class="hidden">
+      <div id="score-display">0</div>
+      <button id="btn-pause" class="icon-btn">❚❚</button>
+      <button id="btn-mute" class="icon-btn">🔊</button>
+    </div>
+
+    <!-- ================= PAUSE ================= -->
+    <div id="pause-screen" class="overlay-screen hidden">
+      <h2 class="screen-title">DIJEDA</h2>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="btn btn-primary">▶ LANJUTKAN</button>
+        <button id="btn-pause-menu" class="btn btn-secondary">☰ MENU</button>
+      </div>
+    </div>
+
+    <!-- ================= GET READY (sebelum flap pertama) ================= -->
+    <div id="ready-screen" class="overlay-screen hidden">
+      <p class="ready-text">Ketuk untuk mulai terbang!</p>
+    </div>
+
+    <!-- ================= GAME OVER ================= -->
+    <div id="gameover-screen" class="overlay-screen hidden">
+      <h2 class="screen-title go-title">GAME OVER</h2>
+
+      <div class="score-board">
+        <div class="score-row">
+          <span class="label">SKOR</span>
+          <span id="final-score-value">0</span>
+        </div>
+        <div class="score-row">
+          <span class="label">HIGH SCORE</span>
+          <span id="final-highscore-value">0</span>
+        </div>
+        <div id="new-record-badge" class="hidden">✦ REKOR BARU ✦</div>
+      </div>
+
+      <div class="menu-buttons">
+        <button id="btn-retry" class="btn btn-primary">↻ PLAY AGAIN</button>
+        <button id="btn-gameover-menu" class="btn btn-secondary">☰ MENU</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="audio.js"></script>
+  <script src="entities.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>
