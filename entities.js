@@ -21,6 +21,11 @@ class Player {
     this.flapTimer = 0;
     this.flapScale = 1;
     this.bobPhase = Math.random() * Math.PI * 2;
+
+    // Jejak terbang (trail): menyimpan posisi-posisi terakhir untuk digambar di belakang kucing
+    this.trailPoints = [];
+    this.trailMaxLength = 16;
+    this.trailSampleTimer = 0;
   }
 
   // Radius collider lingkaran (lebih adil daripada kotak penuh)
@@ -56,6 +61,77 @@ class Player {
 
     // Bobbing halus saat idle di menu
     this.bobPhase += dt * 0.06;
+
+    // Catat titik jejak secara berkala (bukan tiap frame, biar jejaknya tidak terlalu rapat)
+    this.trailSampleTimer -= dt;
+    if (this.trailSampleTimer <= 0) {
+      this.trailSampleTimer = 2; // ambil sampel tiap ~2 frame unit
+      this.trailPoints.push({ x: this.x + this.width * 0.15, y: this.y + this.height / 2 });
+      if (this.trailPoints.length > this.trailMaxLength) this.trailPoints.shift();
+    }
+  }
+
+  clearTrail() {
+    this.trailPoints = [];
+  }
+
+  /* Menggambar jejak di belakang kucing sesuai gaya yang dipilih pemain.
+     trailType: 'none' | 'rainbow' | 'fire' | 'gold' | 'neon' | 'galaxy' */
+  drawTrail(ctx, trailType, timeOffset) {
+    if (!trailType || trailType === 'none' || this.trailPoints.length < 2) return;
+
+    const points = this.trailPoints;
+    const n = points.length;
+
+    for (let i = 0; i < n; i++) {
+      const p = points[i];
+      const progress = i / n; // 0 = paling lama/kecil, 1 = paling baru/besar (dekat kucing)
+      const radius = 3 + progress * 7;
+      const alpha = 0.15 + progress * 0.55;
+
+      let color;
+      switch (trailType) {
+        case 'rainbow': {
+          // Jejak pelangi: warna berputar mengikuti posisi & waktu, seperti ekor pelangi klasik
+          const hue = (timeOffset * 2 + i * 22) % 360;
+          color = `hsla(${hue}, 90%, 62%, ${alpha})`;
+          break;
+        }
+        case 'fire': {
+          const hue = 25 - progress * 15; // dari kuning-oranye ke merah
+          color = `hsla(${hue}, 95%, ${58 + progress * 10}%, ${alpha})`;
+          break;
+        }
+        case 'gold': {
+          color = `hsla(${45 + Math.sin(i + timeOffset * 0.1) * 6}, 90%, ${55 + progress * 15}%, ${alpha})`;
+          break;
+        }
+        case 'neon': {
+          color = `hsla(${160 + progress * 15}, 100%, ${55 + progress * 10}%, ${alpha})`;
+          break;
+        }
+        case 'galaxy': {
+          const hue = 260 + Math.sin(i * 0.8 + timeOffset * 0.05) * 25;
+          color = `hsla(${hue}, 85%, ${60 + progress * 15}%, ${alpha})`;
+          break;
+        }
+        default:
+          color = `rgba(255,255,255,${alpha})`;
+      }
+
+      ctx.save();
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Sedikit kilauan bintang untuk trail gold & galaxy, biar terasa lebih "keren"
+      if ((trailType === 'gold' || trailType === 'galaxy') && i % 3 === 0) {
+        ctx.fillStyle = `rgba(255,255,255,${alpha * 0.8})`;
+        ctx.fillRect(p.x - 1, p.y - 1, 2, 2);
+      }
+      ctx.restore();
+    }
   }
 
   draw(ctx) {
