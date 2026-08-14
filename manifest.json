@@ -1,0 +1,31 @@
+{
+  "name": "FLAPPY CAT",
+  "short_name": "Flappy Cat",
+  "description": "Game arcade 2D side-scrolling - terbang setinggi mungkin bersama kucing melewati rintangan kristal!",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#4ec3e0",
+  "theme_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "assets/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
